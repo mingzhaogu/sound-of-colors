@@ -22,7 +22,6 @@ window.addEventListener('resize', function(e) {
 window.addEventListener('keypress', function(e) {
   init();
   if (sounds[e.key]) sounds[e.key].play();
-  console.log(sounds[e.key]);
 });
 
 // GLOBAL VARIABLES:

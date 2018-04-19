@@ -97,7 +97,6 @@ window.addEventListener('resize', function (e) {
 window.addEventListener('keypress', function (e) {
   init();
   if (__WEBPACK_IMPORTED_MODULE_1__key_to_sounds__["a" /* default */][e.key]) __WEBPACK_IMPORTED_MODULE_1__key_to_sounds__["a" /* default */][e.key].play();
-  console.log(__WEBPACK_IMPORTED_MODULE_1__key_to_sounds__["a" /* default */][e.key]);
 });
 
 // GLOBAL VARIABLES:
@@ -335,41 +334,23 @@ const randomColor = function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_howler___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_howler__);
 
 
-const C4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/4/C4.mp3'], html5: true });
-const Csharp4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/4/Db4.mp3'], html5: true });
-const D4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/4/D4.mp3'], html5: true });
-const Dsharp4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/4/Eb4.mp3'], html5: true });
-const E4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/4/E4.mp3'], html5: true });
-const F4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/4/F4.mp3'], html5: true });
-const Fsharp4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/4/Gb4.mp3'], html5: true });
-const G4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/4/G4.mp3'], html5: true });
-const Gsharp4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/4/Ab4.mp3'], html5: 4 / true });
-const A4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/4/A4.mp3'], html5: true });
-const Asharp4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/4/Bb4.mp3'], html5: true });
-const B4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/4/B4.mp3'], html5: true });
+const C4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/C4.mp3'], html5: true });
+const Csharp4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/Db4.mp3'], html5: true });
+const D4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/D4.mp3'], html5: true });
+const Dsharp4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/Eb4.mp3'], html5: true });
+const E4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/E4.mp3'], html5: true });
+const F4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/F4.mp3'], html5: true });
+const Fsharp4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/Gb4.mp3'], html5: true });
+const G4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/G4.mp3'], html5: true });
+const Gsharp4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/Ab4.mp3'], html5: 4 / true });
+const A4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/A4.mp3'], html5: true });
+const Asharp4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/Bb4.mp3'], html5: true });
+const B4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/B4.mp3'], html5: true });
 const C5 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/C5.mp3'], html5: true });
 const Csharp5 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/Db5.mp3'], html5: true });
 const D5 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/D5.mp3'], html5: true });
 const Dsharp5 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/Eb5.mp3'], html5: true });
 const E5 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/E5.mp3'], html5: true });
-
-// const C4 = new Howl({ src: ['./sounds/aiffsounds/Piano.mf.C4.aiff'], html5: true });
-// const Csharp4 = new Howl({ src: ['./sounds/aiffsounds/Piano.mf.Db4.aiff'], html5: true });
-// const D4 = new Howl({ src: ['./sounds/aiffsounds/Piano.mf.D4.aiff'], html5: true });
-// const Dsharp4 = new Howl({ src: ['./sounds/aiffsounds/Piano.mf.Eb4.aiff'], html5: true });
-// const E4 = new Howl({ src: ['./sounds/aiffsounds/Piano.mf.E4.aiff'], html5: true });
-// const F4 = new Howl({ src: ['./sounds/aiffsounds/Piano.mf.F4.aiff'], html5: true });
-// const Fsharp4 = new Howl({ src: ['./sounds/aiffsounds/Piano.mf.Gb4.aiff'], html5: true });
-// const G4 = new Howl({ src: ['./sounds/aiffsounds/Piano.mf.G4.aiff'], html5: true });
-// const Gsharp4 = new Howl({ src: ['./sounds/aiffsounds/Piano.mf.Ab4.aiff'], html5: 4/true });
-// const A4 = new Howl({ src: ['./sounds/aiffsounds/Piano.mf.A4.aiff'], html5: true });
-// const Asharp4 = new Howl({ src: ['./sounds/aiffsounds/Piano.mf.Bb4.aiff'], html5: true });
-// const B4 = new Howl({ src: ['./sounds/aiffsounds/Piano.mf.B4.aiff'], html5: true });
-// const C5 = new Howl({ src: ['./sounds/aiffsounds/Piano.mf.C5.aiff'], html5: true });
-// const Csharp5 = new Howl({ src: ['./sounds/aiffsounds/Piano.mf.Db5.aiff'], html5: true });
-// const D5 = new Howl({ src: ['./sounds/aiffsounds/Piano.mf.D5.aiff'], html5: true });
-// const Dsharp5 = new Howl({ src: ['./sounds/aiffsounds/Piano.mf.Eb5.aiff'], html5: true });
-// const E5 = new Howl({ src: ['./sounds/aiffsounds/Piano.mf.E5.aiff'], html5: true });
 
 const sounds = {
   'a': C4,
