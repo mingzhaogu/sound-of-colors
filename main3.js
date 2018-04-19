@@ -47,7 +47,6 @@ function Particle (x, y, dx, dy, radius) {
   };
 
   this.color = this.randomColor();
-  // this.color = '#' + Math.random().toString(16).substr(-6);
 
   this.draw = () => {
     c.beginPath();
@@ -61,19 +60,19 @@ function Particle (x, y, dx, dy, radius) {
   this.update = (particles) => {
     this.draw();
 
-    for (let i = 0; i < particles.length; i++) {
-      const p2 = particles[i];
-      if (this === p2) continue;
-      if (distance(this.x, this.y, p2.x, p2.y) < this.radius + p2.radius) {
-        resolveCollision(this, p2);
-      }
-    }
+    // for (let i = 0; i < particles.length; i++) {
+    //   const p2 = particles[i];
+    //   if (this === p2) continue;
+    //   if (distance(this.x, this.y, p2.x, p2.y) < this.radius + p2.radius) {
+    //     resolveCollision(this, p2);
+    //   }
+    // }
 
     if (this.x - this.radius <= 0 || this.x + this.radius >= canvas.width) {
       this.velocity.x = -this.velocity.x;
     }
 
-    if (this.y + this.radius >= canvas.height) {
+    if (this.y + this.radius + this.velocity.y >= canvas.height) {
       this.velocity.y = -this.velocity.y * friction;
     } else {
       this.velocity.y += gravity;
@@ -152,23 +151,23 @@ const init = function() {
 
   for (let i = 0; i < 100; i++) {
     // const r = Math.random() * 5 + 15;
-    let r = 15;
+    let r = Math.random() * 5;
     let x = Math.random() * (canvas.width - 2 * r) + r;
     let y = Math.random() * (canvas.height - 2 * r) + r;
     const dx = (Math.random() - 0.5) * 5;
     const dy = (Math.random() - 0.5) * 5;
 
-    if (i !== 0) {
-      for (let j = 0; j < particles.length; j++) {
-        const p2 = particles[j];
-        if (distance(x, y, p2.x, p2.y) < r + p2.radius) {
-          x = Math.random() * (canvas.width - 2 * r) + r;
-          y = Math.random() * (canvas.height - 2 * r) + r;
-
-          j = -1;
-        }
-      }
-    }
+    // if (i !== 0) {
+    //   for (let j = 0; j < particles.length; j++) {
+    //     const p2 = particles[j];
+    //     if (distance(x, y, p2.x, p2.y) < r + p2.radius) {
+    //       x = Math.random() * (canvas.width - 2 * r) + r;
+    //       y = Math.random() * (canvas.height - 2 * r) + r;
+    //
+    //       j = -1;
+    //     }
+    //   }
+    // }
 
     particles.push(new Particle(x, y, dx, dy, r));
   }

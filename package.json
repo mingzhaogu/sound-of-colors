@@ -1,7 +1,6 @@
 {
   "name": "aA-javascript-sound-of-colors",
   "version": "1.0.0",
-  "description": "",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -13,6 +12,17 @@
   "dependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
+    "howler": "^2.0.9",
     "webpack": "^3.10.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mingzhaogu/sound-of-colors.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mingzhaogu/sound-of-colors/issues"
+  },
+  "homepage": "https://github.com/mingzhaogu/sound-of-colors#readme",
+  "description": ""
 }
