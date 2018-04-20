@@ -74,6 +74,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+// SETUP START
 const canvas = document.querySelector('canvas');
 canvas.width = Math.min(1028, window.innerWidth);
 canvas.height = window.innerHeight;
@@ -99,61 +100,94 @@ window.addEventListener('keypress', function (e) {
   currentKey = e.key;
   currentKeyTimeOut = 100;
 });
+// SETUP END
 
 // GLOBAL VARIABLES:
-const gravity = 1;
+const gravity = 0.2;
 const friction = 0.9;
 const mouse = {
   x: innerWidth / 2,
   y: innerHeight / 2
 };
 const noteWidth = canvas.width / 12;
-const dotsPerKey = 50;
+const dotsPerKey = 5;
+const oddsOfExplosion = 0.5;
 let currentKey;
 let currentKeyTimeOut;
 // GLOBAL VARIABLES:
 
-function Particle({ pos, radius, vel, color }) {
-  this.pos = { x: pos.x, y: pos.y };
-  this.vel = { x: vel.x, y: vel.y };
-  this.acc = { x: 0, y: 0 };
-  this.radius = radius;
-  this.gravity = gravity;
-  this.color = color || Object(__WEBPACK_IMPORTED_MODULE_0__helper_methods__["d" /* randomColor */])();
+class Particle {
+  constructor({ pos, radius, vel, color }) {
+    this.pos = { x: pos.x, y: pos.y };
+    this.vel = { x: vel.x, y: vel.y };
 
-  this.applyForce = force => {
-    this.acc.x += force.x;
-    this.acc.y += force.y;
-  };
+    this.radius = radius;
+    this.gravity = gravity;
+    this.color = color || Object(__WEBPACK_IMPORTED_MODULE_0__helper_methods__["d" /* randomColor */])();
+    this.firework = Math.random() <= oddsOfExplosion;
+  }
 
-  this.update = () => {
-    this.vel.x += this.acc.x;
-    this.vel.y += this.acc.y;
+  update() {
 
     this.pos.x += this.vel.x;
     this.pos.y += this.vel.y;
 
     if (this.pos.x < 0) this.pos.x = canvas.width;
     if (this.pos.x > canvas.width) this.pos.x = 0;
-    // if (this.pos.y < 0) this.pos.y = canvas.height;
-    if (this.pos.y < 0) {
-      const idx = particles.indexOf(this);
-      if (idx > -1) particles.splice(idx, 1);
+
+    // let checkForRemoval = false;
+    // if (this.pos.y <= 0.22 * canvas.height) {
+    //   if (this.pos.x > noteWidth || this.pos.x < (canvas.width - noteWidth)) {
+    //     checkForRemoval = true;
+    //   } else if (this.pos.y < 0) {
+    //     checkForRemoval = true;
+    //   }
+    // }
+
+    // if (checkForRemoval) {
+    if (this.firework && this.pos.y <= 0.22 * canvas.height) {
+      this.explode();
+    } else if (this.pos.y <= 0.22 * canvas.height) {
+      this.radius *= 0.98;
     }
 
-    this.acc = { x: 0, y: 0 };
-    // c.strokeStyle = this.color;
-    this.show();
-  };
+    if (this.pos.y < 0) this.removeParticle();else this.show();
 
-  this.show = () => {
+    c.strokeStyle = this.color;
+  }
+
+  explode() {
+    for (let i = 0; i < 10; i++) {
+      const f = new Firework({
+        pos: {
+          x: this.pos.x,
+          y: this.pos.y
+        },
+        radius: Math.random() + 1,
+        vel: {
+          x: (Math.random() - 0.5) * 2.5,
+          y: (Math.random() - 0.5) * 2.5
+        },
+        color: this.color
+      });
+
+      particles.push(f);
+      this.removeParticle();
+    }
+  }
+
+  show() {
     c.beginPath();
     c.arc(this.pos.x, this.pos.y, this.radius, 0, Math.PI * 2, false);
-    c.strokeStyle = this.color;
+    // c.lineWidth = 0;
     c.fillStyle = this.color;
-    // c.stroke();
     c.fill();
-  };
+  }
+
+  removeParticle() {
+    const idx = particles.indexOf(this);
+    if (idx > -1) particles.splice(idx, 1);
+  }
 }
 
 let particles = [];
@@ -164,17 +198,23 @@ function init(key, e) {
     const noteIndex = Object(__WEBPACK_IMPORTED_MODULE_0__helper_methods__["a" /* keyIndex */])(key);
     initX = __WEBPACK_IMPORTED_MODULE_0__helper_methods__["e" /* setInitX */][noteIndex] * noteWidth;
     initY = 0.75 * canvas.height;
-    initVel = -Math.random() * 6;
+    initVel = -Math.max(Math.random() * 6, 1);
+    // initVel = - Math.random() * 28;
+    // initCol = randomColor();
   } else if (e) {
     const rand = [0, 11 * noteWidth];
     const randSample = rand[Math.floor(Math.random() * rand.length)];
     initX = Math.random() * noteWidth + randSample;
     initY = canvas.height;
-    initVel = -Math.random() * 8;
+    // initVel = - Math.random() * 8;
+    // initVel = - (Math.random() + 1) * 15;
+    initVel = -Math.max((Math.random() + 0.5) * 3, 1);
+    // initCol = randomColor();
   } else {
     initX = Math.random() * canvas.width;
     initY = canvas.height;
-    initVel = -Math.random() * 5;
+    initVel = -Math.max(Math.random() * 5, 1);
+    // initVel = - (Math.random() + 2) * 5;
     initCol = Object(__WEBPACK_IMPORTED_MODULE_0__helper_methods__["d" /* randomColor */])(0.2);
   }
 
@@ -183,9 +223,11 @@ function init(key, e) {
       x: initX,
       y: initY
     },
+    // radius: (Math.random() + 3),
     radius: Math.random() + 3,
     vel: {
-      x: Math.random() - 0.5,
+      // x: Math.random() - 0.5,
+      x: (Math.random() - 0.5) * 0.25,
       y: initVel
     },
     color: initCol
@@ -194,11 +236,12 @@ function init(key, e) {
 
 function animate() {
   requestAnimationFrame(animate);
-  resetDisplay();
   draw();
+  resetDisplay();
 }
 
 function draw() {
+  // c.clearRect(0, 0, canvas.width, canvas.height);
   particles.forEach(particle => {
     particle.update();
   });
@@ -219,12 +262,14 @@ function displayTitle() {
   c.fillStyle = 'rgba(255, 255, 255, 0.1)';
   c.fillStyle = 'rgba(0, 0, 0, 0.4)';
   // c.fillStyle = 'red';
-  c.fillRect(noteWidth, 0.05 * canvas.height, canvas.width - 2 * noteWidth, 0.18 * canvas.height);
+  c.fillRect(noteWidth, 0.04 * canvas.height, canvas.width - 2 * noteWidth, 0.18 * canvas.height);
 
+  // label title
   c.font = '96px Codystar';
   c.fillStyle = 'rgba(255, 255, 255, 1)';
-  // c.fillStyle = randomColor();
   c.fillText('Sound of Colors', noteWidth, 0.15 * canvas.height, canvas.width * 5 / 6);
+
+  // label name
   c.font = '24px Codystar';
   c.fillStyle = 'rgba(255, 255, 255, 1)';
   c.fillText('Annie Gu', 5.5 * noteWidth, 0.2 * canvas.height, canvas.width * 5 / 6);
@@ -234,28 +279,30 @@ function displayPiano() {
   const topOfPiano = 0.75 * canvas.height;
   let keyColor;
   const index = Object(__WEBPACK_IMPORTED_MODULE_0__helper_methods__["a" /* keyIndex */])(currentKey);
-  let colorKey = () => {};
+  let colorCurrentKey = () => {};
 
   if ([1, 3, 6, 8, 10, 13, 15].includes(index)) keyColor = "black";else keyColor = "white";
 
   if (currentKeyTimeOut > 0) {
+    const pianoHeight = canvas.height - topOfPiano;
     if (keyColor === 'white') {
-      colorKey = () => {
+      colorCurrentKey = () => {
         const coloredI = __WEBPACK_IMPORTED_MODULE_0__helper_methods__["c" /* mapToWhite */][index];
-        c.fillStyle = Object(__WEBPACK_IMPORTED_MODULE_0__helper_methods__["d" /* randomColor */])();
-        c.fillRect(noteWidth * coloredI, topOfPiano, noteWidth, canvas.height - topOfPiano);
-        c.strokeStyle = Object(__WEBPACK_IMPORTED_MODULE_0__helper_methods__["d" /* randomColor */])();
-        c.strokeRect(noteWidth * coloredI, topOfPiano, noteWidth, canvas.height - topOfPiano);
+        c.fillStyle = 'rgba(0, 0, 0, 0.5)';
+        c.fillStyle = 'gray';
+        c.fillRect(noteWidth * coloredI, topOfPiano, noteWidth, pianoHeight);
+        c.strokeRect(noteWidth * coloredI, topOfPiano, noteWidth, pianoHeight);
         c.stroke();
       };
     } else if (keyColor === 'black') {
-      colorKey = () => {
+      colorCurrentKey = () => {
         const coloredI = __WEBPACK_IMPORTED_MODULE_0__helper_methods__["b" /* mapToBlack */][index];
-        console.log("colI", coloredI);
-        c.fillStyle = Object(__WEBPACK_IMPORTED_MODULE_0__helper_methods__["d" /* randomColor */])();
-        c.fillRect(noteWidth * (coloredI + 2 / 3), topOfPiano, noteWidth * 2 / 3, (canvas.height - topOfPiano) * 2 / 3);
+        c.fillStyle = 'rgba(255, 255, 255, 0.5)';
+        c.fillStyle = 'rgba(0, 0, 0, 0.5)';
+        c.fillStyle = 'gray';
+        c.fillRect(noteWidth * (coloredI + 2 / 3), topOfPiano, noteWidth * 2 / 3, pianoHeight * 2 / 3);
         c.strokeStyle = 'rgba(255, 255, 255, 1)';
-        c.strokeRect(noteWidth * (coloredI + 2 / 3), topOfPiano + 1, noteWidth * 2 / 3, (canvas.height - topOfPiano) * 2 / 3);
+        c.strokeRect(noteWidth * (coloredI + 2 / 3), topOfPiano + 1, noteWidth * 2 / 3, pianoHeight);
         c.stroke();
       };
     }
@@ -264,6 +311,11 @@ function displayPiano() {
     currentKey = undefined;
   }
 
+  createKeys(topOfPiano, keyColor, colorCurrentKey);
+  labelKeys();
+}
+
+function createKeys(topOfPiano, keyColor, colorCurrentKey) {
   //creating the white keys
   for (let i = 1; i < 11; i++) {
     c.fillStyle = 'rgba(255, 255, 255, 1)';
@@ -272,7 +324,8 @@ function displayPiano() {
     c.strokeRect(noteWidth * i, topOfPiano, noteWidth, canvas.height - topOfPiano);
     c.stroke();
   }
-  if (keyColor === 'white') colorKey();
+
+  if (keyColor === 'white') colorCurrentKey();
   //creating the black keys
   for (let i = 1; i < 10; i++) {
     if (i === 3 || i === 7) continue;
@@ -282,7 +335,50 @@ function displayPiano() {
     c.strokeRect(noteWidth * (i + 2 / 3), topOfPiano + 1, noteWidth * 2 / 3, (canvas.height - topOfPiano) * 2 / 3);
     c.stroke();
   }
-  if (keyColor === 'black') colorKey();
+  if (keyColor === 'black') colorCurrentKey();
+}
+
+function labelKeys() {
+  c.font = '32px Poiret One';
+  // label white keys
+  c.fillStyle = 'rgba(0, 0, 0, 1)';
+  // const whiteKeys = ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C', 'D', 'E'];
+  const whiteKeys = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';'];
+  whiteKeys.forEach((note, idx) => {
+    c.fillText(note, noteWidth * (idx + 1.38), 0.97 * canvas.height, noteWidth);
+  });
+
+  // label black keys
+  c.fillStyle = 'rgba(255, 255, 255, 1)';
+  // const blackKeys1 = ['C#', 'D#', '', 'F#', 'G#', 'A#', '', 'C#', 'D#'];
+  // const blackKeys2 = ['Db', 'Eb', '', 'Gb', 'Ab', 'Bb', '', 'Db', 'Eb'];
+  const blackKeys = ['W', 'E', '', 'T', 'Y', 'U', '', 'O', 'P'];
+  blackKeys.forEach((note, idx) => {
+    c.fillText(note, noteWidth * (idx + 1.85), 0.9 * canvas.height, noteWidth);
+  });
+}
+
+class Firework extends Particle {
+  constructor({ pos, radius, vel, color }) {
+    super({ pos, radius, vel, color });
+  }
+  //
+  // const x = Math.random() * (innerWidth - 2 * r) + r;
+  // const y = Math.random() * (innerHeight - 2 * r) + r;
+  // const r = Math.random() * 5 + 15;
+
+  update() {
+    this.pos.x += this.vel.x;
+    this.pos.y += this.vel.y;
+
+    if (this.pos.x < 0 || this.pos.x > canvas.width) this.removeParticle();
+    if (this.pos.y < 0 || this.pos.y > canvas.width) this.removeParticle();
+    if (this.radius < 0.05) this.removeParticle();
+
+    this.radius *= 0.99;
+    this.show();
+  }
+
 }
 // function drawFireworks() {
 //   for (let i = 0; i < particles.length; i++) {
@@ -421,7 +517,8 @@ function displayPiano() {
 
 
 animate();
-setInterval(init, 500);
+// setInterval(init, 500);
+// setInterval(init, 300);
 
 /***/ }),
 /* 1 */
@@ -434,6 +531,7 @@ const randomColor = function (opacity) {
   const b = Math.floor(Math.random() * 255);
   const a = opacity || Math.random() * 0.5 + 0.5;
   return `rgba(${r},${g}, ${b}, ${a})`;
+  // return (`rgb(${r},${g}, ${b})`);
 };
 /* harmony export (immutable) */ __webpack_exports__["d"] = randomColor;
 
@@ -513,7 +611,7 @@ const E4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/E4
 const F4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/F4.mp3'], html5: true });
 const Gb4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/Gb4.mp3'], html5: true });
 const G4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/G4.mp3'], html5: true });
-const Ab4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/Ab4.mp3'], html5: 4 / true });
+const Ab4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/Ab4.mp3'], html5: true });
 const A4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/A4.mp3'], html5: true });
 const Bb4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/Bb4.mp3'], html5: true });
 const B4 = new __WEBPACK_IMPORTED_MODULE_0_howler__["Howl"]({ src: ['./sounds/B4.mp3'], html5: true });

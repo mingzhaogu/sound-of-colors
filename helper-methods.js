@@ -4,6 +4,7 @@ export const randomColor = function(opacity) {
   const b = Math.floor(Math.random() * 255);
   const a = opacity || Math.random() * 0.5 + 0.5;
   return (`rgba(${r},${g}, ${b}, ${a})`);
+  // return (`rgb(${r},${g}, ${b})`);
 };
 
 const keyboard = [

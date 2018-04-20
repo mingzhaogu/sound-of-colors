@@ -1,7 +1,9 @@
-import * as Particle from './particle';
+import { Particle } from './main';
 
-function Firework() {
-
+class Firework extends Particle {
+  constructor({ pos, radius, vel, color }) {
+    super({ pos, radius, vel, color })
+  }
   const x = Math.random() * (innerWidth - 2 * r) + r;
   const y = Math.random() * (innerHeight - 2 * r) + r;
   const r = Math.random() * 5 + 15;
@@ -18,3 +20,5 @@ function Firework() {
     this.firework.show();
   }
 }
+
+export default Firework;
