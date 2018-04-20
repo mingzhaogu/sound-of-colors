@@ -77,7 +77,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // SETUP START
 const canvas = document.querySelector('canvas');
 canvas.width = Math.min(1028, window.innerWidth);
-// canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 const c = canvas.getContext('2d');
 clearContext();
@@ -144,27 +143,16 @@ class Particle {
   }
 
   update() {
-
     this.pos.x += this.vel.x;
     this.pos.y += this.vel.y;
 
     if (this.pos.x < 0) this.pos.x = canvas.width;
     if (this.pos.x > canvas.width) this.pos.x = 0;
 
-    // let checkForRemoval = false;
-    // if (this.pos.y <= 0.22 * canvas.height) {
-    //   if (this.pos.x > noteWidth || this.pos.x < (canvas.width - noteWidth)) {
-    //     checkForRemoval = true;
-    //   } else if (this.pos.y < 0) {
-    //     checkForRemoval = true;
-    //   }
-    // }
-
-    // if (checkForRemoval) {
     if (this.firework && this.pos.y <= 0.235 * canvas.height) {
       this.explode();
     } else if (this.pos.y <= 0.235 * canvas.height) {
-      this.radius *= 0.98;
+      this.radius *= 0.99;
     }
 
     if (this.pos.y < 0) this.removeParticle();else this.show();
@@ -179,7 +167,7 @@ class Particle {
           x: this.pos.x,
           y: this.pos.y
         },
-        radius: Math.random() + 1,
+        radius: Math.random() + 2,
         vel: {
           x: (Math.random() - 0.5) * 2.5,
           y: (Math.random() - 0.5) * 2.5
@@ -215,37 +203,23 @@ function init(key, e) {
     initX = __WEBPACK_IMPORTED_MODULE_0__helper_methods__["e" /* setInitX */][noteIndex] * noteWidth;
     initY = 0.75 * canvas.height;
     initVel = -Math.max(Math.random() * 6, 1);
-    // initVel = - Math.random() * 28;
-    // initCol = randomColor();
   } else if (e) {
     const rand = [0, 11 * noteWidth];
     const randSample = rand[Math.floor(Math.random() * rand.length)];
     initX = Math.random() * noteWidth + randSample;
     initY = canvas.height;
-    // initVel = - Math.random() * 8;
-    // initVel = - (Math.random() + 1) * 15;
     initVel = -Math.max((Math.random() + 0.5) * 3, 1);
-    // initCol = randomColor();
   } else {
     initX = Math.random() * canvas.width;
     initY = canvas.height;
     initVel = -Math.max(Math.random() * 5, 1);
-    // initVel = - (Math.random() + 2) * 5;
     initCol = Object(__WEBPACK_IMPORTED_MODULE_0__helper_methods__["d" /* randomColor */])(0.2);
   }
 
   particles.push(new Particle({
-    pos: {
-      x: initX,
-      y: initY
-    },
-    // radius: (Math.random() + 3),
+    pos: { x: initX, y: initY },
     radius: Math.random() + 3,
-    vel: {
-      // x: Math.random() - 0.5,
-      x: (Math.random() - 0.5) * 0.25,
-      y: initVel
-    },
+    vel: { x: (Math.random() - 0.5) * 0.25, y: initVel },
     color: initCol
   }));
 }
@@ -257,7 +231,6 @@ function animate() {
 }
 
 function draw() {
-  // c.clearRect(0, 0, canvas.width, canvas.height);
   particles.forEach(particle => {
     particle.update();
   });
@@ -288,8 +261,11 @@ function displayTitle() {
   c.font = '36px Codystar';
   c.fillText('Annie Gu', 5 * noteWidth, 0.21 * canvas.height, canvas.width * 5 / 6);
 
-  // add href event listeners
-  // link icons
+  addIcons();
+}
+
+function addIcons() {
+  // link icon locations
   const yHeight = 0.05 * canvas.height;
   const y1 = 0.17 * canvas.height;
   const y2 = y1 + yHeight;
@@ -300,7 +276,7 @@ function displayTitle() {
   const linkedInX1 = 7.45 * noteWidth;
   const linkedInX2 = linkedInX1 + xWidth;
 
-  // github link
+  // check for mouseover
   if (mouse.x >= githubX1 && mouse.x <= githubX2 && mouse.y >= y1 && mouse.y <= y2) {
     document.body.style.cursor = "pointer";
     inGithubLink = true;
@@ -319,6 +295,7 @@ function displayTitle() {
   if (inGithubLink) c.fillStyle = Object(__WEBPACK_IMPORTED_MODULE_0__helper_methods__["d" /* randomColor */])(1);
   c.fillText('\uf09b', 4.3 * noteWidth, 0.21 * canvas.height, canvas.width * 2 / 6);
   c.fillStyle = 'rgba(255, 255, 255, 1)';
+
   // linkedin icon
   if (inLinkedInLink) c.fillStyle = Object(__WEBPACK_IMPORTED_MODULE_0__helper_methods__["d" /* randomColor */])(1);
   c.fillText('\uf0e1', 7.5 * noteWidth, 0.21 * canvas.height, canvas.width * 2 / 6);
@@ -347,8 +324,6 @@ function displayPiano() {
     } else if (keyColor === 'black') {
       colorCurrentKey = () => {
         const coloredI = __WEBPACK_IMPORTED_MODULE_0__helper_methods__["b" /* mapToBlack */][index];
-        c.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        c.fillStyle = 'rgba(0, 0, 0, 0.5)';
         c.fillStyle = 'gray';
         c.fillRect(noteWidth * (coloredI + 2 / 3), topOfPiano, noteWidth * 2 / 3, pianoHeight * 2 / 3);
         c.strokeStyle = 'rgba(255, 255, 255, 1)';
@@ -390,9 +365,9 @@ function createKeys(topOfPiano, keyColor, colorCurrentKey) {
 
 function labelKeys() {
   c.font = '32px Poiret One';
+
   // label white keys
   c.fillStyle = 'rgba(0, 0, 0, 1)';
-  // const whiteKeys = ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C', 'D', 'E'];
   const whiteKeys = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';'];
   whiteKeys.forEach((note, idx) => {
     c.fillText(note, noteWidth * (idx + 1.38), 0.97 * canvas.height, noteWidth);
@@ -400,8 +375,6 @@ function labelKeys() {
 
   // label black keys
   c.fillStyle = 'rgba(255, 255, 255, 1)';
-  // const blackKeys1 = ['C#', 'D#', '', 'F#', 'G#', 'A#', '', 'C#', 'D#'];
-  // const blackKeys2 = ['Db', 'Eb', '', 'Gb', 'Ab', 'Bb', '', 'Db', 'Eb'];
   const blackKeys = ['W', 'E', '', 'T', 'Y', 'U', '', 'O', 'P'];
   blackKeys.forEach((note, idx) => {
     c.fillText(note, noteWidth * (idx + 1.85), 0.9 * canvas.height, noteWidth);
@@ -412,10 +385,6 @@ class Firework extends Particle {
   constructor({ pos, radius, vel, color }) {
     super({ pos, radius, vel, color });
   }
-  //
-  // const x = Math.random() * (innerWidth - 2 * r) + r;
-  // const y = Math.random() * (innerHeight - 2 * r) + r;
-  // const r = Math.random() * 5 + 15;
 
   update() {
     this.pos.x += this.vel.x;
@@ -428,147 +397,9 @@ class Firework extends Particle {
     this.radius *= 0.99;
     this.show();
   }
-
 }
-// function drawFireworks() {
-//   for (let i = 0; i < particles.length; i++) {
-//     const firework = particles[i];
-//
-//     if (firework.update()) {
-//       particles.splice(i, 1);
-//
-//       if (Math.random() < 0.8) {
-//         FireworkExplosions.star(firework);
-//       } else {
-//         FireworkExplosions.circle(firework);
-//       };
-//     }
-//
-//     firework.render
-//   }
-// }
-
-
-//   this.draw = () => {
-//     c.beginPath();
-//     c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-//     c.strokeStyle = this.color;
-//     c.fillStyle = this.color;
-//     c.fill();
-//     c.stroke();
-//   };
-//
-//   this.update = (particles) => {
-//     this.draw();
-//
-//     if (this.x - this.radius <= 0 || this.x + this.radius >= canvas.width) {
-//       this.velocity.x = -this.velocity.x;
-//     }
-//
-//     if (this.y + this.radius + this.velocity.y >= canvas.height) {
-//       this.velocity.y = -this.velocity.y * friction;
-//     } else {
-//       this.velocity.y += gravity;
-//     }
-//
-//     this.x += this.velocity.x;
-//     this.y += this.velocity.y;
-//   };
-//
-//   // random balls:
-//   // this.updateRandomBalls = function() {
-//   //   if (this.x + this.radius > innerWidth || this.x - this.radius < 0) {
-//   //     this.dx = -this.dx;
-//   //   }
-//   //
-//   //   if (this.y + this.radius > innerHeight || this.y - this.radius < 0) {
-//   //     this.dy = -this.dy;
-//   //   }
-//   //
-//   //   this.x += this.dx;
-//   //   this.y += this.dy;
-//   //
-//   //   if (mouse.x - this.x < 50 && mouse.x - this.x > -50
-//   //     && mouse.y - this.y < 50 && mouse.y - this.y > -50
-//   //   ) {
-//   //     if (this.radius < maxRadius) {
-//   //       this.radius += 1;
-//   //     }
-//   //   } else if (this.radius > minRadius) {
-//   //     this.radius -=1;
-//   //   }
-//   //
-//   //
-//   //   this.draw();
-//   // };
-//
-//   // this.updateGravity = function() {
-//   //   if (this.y + this.radius + this.dy >= canvas.height) {
-//   //     this.dy = -this.dy * friction;
-//   //     if (this.dx > 0) {
-//   //       this.dx -= 1;
-//   //     } else if (this.dx < 0) {
-//   //       this.dx += 1;
-//   //     }
-//   //   } else {
-//   //     this.dy += gravity;
-//   //   }
-//   //
-//   //   if (this.x + this.radius + this.dx > canvas.width
-//   //     || this.x - this.radius + this.dx < 0
-//   //   ) {
-//   //     this.dx = -this.dx;
-//   //   }
-//   //   this.x += this.dx;
-//   //   this.y += this.dy;
-//   //
-//   //   this.draw();
-//   // };
-// // }
-//
-// function distance(x1, y1, x2, y2) {
-//   let xDistance = x2 - x1;
-//   let yDistance = y2 - y1;
-//
-//   return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
-// }
-//
-// function Firework (x, y, dx, dy, radius) {
-//   this.firework = new Particle (x, y, dx, dy, radius);
-// }
-
-// let particles;
-// const init = function() {
-//   particles = [];
-//
-//   for (let i = 0; i < 100; i++) {
-//     // const r = Math.random() * 5 + 15;
-//     let r = Math.random() + 3;
-//     let x = Math.random() * (canvas.width - 2 * r) + r;
-//     let y = Math.random() * (canvas.height - 2 * r) + r;
-//     const dx = (Math.random() - 0.5) * 5;
-//     const dy = (Math.random() - 0.5) * 5;
-//
-//     // if (i !== 0) {
-//     //   for (let j = 0; j < particles.length; j++) {
-//     //     const p2 = particles[j];
-//     //     if (distance(x, y, p2.x, p2.y) < r + p2.radius) {
-//     //       x = Math.random() * (canvas.width - 2 * r) + r;
-//     //       y = Math.random() * (canvas.height - 2 * r) + r;
-//     //
-//     //       j = -1;
-//     //     }
-//     //   }
-//     // }
-//
-//     particles.push(new Particle({x, y}, {dx, dy}, r));
-//   }
-// };
-
 
 animate();
-// setInterval(animate, 500);
-// setInterval(init, 300);
 
 /***/ }),
 /* 1 */
