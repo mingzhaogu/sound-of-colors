@@ -77,18 +77,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // SETUP START
 const canvas = document.querySelector('canvas');
 canvas.width = Math.min(1028, window.innerWidth);
+// canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 const c = canvas.getContext('2d');
 clearContext();
 
-window.addEventListener('mousemove', function (e) {
-  mouse.x = event.x;
-  mouse.y = event.y;
+canvas.addEventListener('mousemove', function (e) {
+  const rect = canvas.getBoundingClientRect();
+  mouse.x = event.x - rect.left;
+  mouse.y = event.y - rect.top;
 });
 
 window.addEventListener('resize', function (e) {
   canvas.width = Math.min(1028, window.innerWidth);
   canvas.height = window.innerHeight;
+  let noteWidth = canvas.width / 12;
   init();
 });
 
@@ -100,6 +103,17 @@ window.addEventListener('keypress', function (e) {
   currentKey = e.key;
   currentKeyTimeOut = 100;
 });
+
+window.addEventListener('click', function (e) {
+  let win;
+  if (inGithubLink) {
+    win = window.open("https://github.com/mingzhaogu", '_blank');
+    win.focus();
+  } else if (inLinkedInLink) {
+    win = window.open("https://www.linkedin.com/in/mingzhaogu/", '_blank');
+    win.focus();
+  }
+});
 // SETUP END
 
 // GLOBAL VARIABLES:
@@ -109,11 +123,13 @@ const mouse = {
   x: innerWidth / 2,
   y: innerHeight / 2
 };
-const noteWidth = canvas.width / 12;
+let noteWidth = canvas.width / 12;
 const dotsPerKey = 5;
 const oddsOfExplosion = 0.5;
 let currentKey;
 let currentKeyTimeOut;
+let inGithubLink;
+let inLinkedInLink;
 // GLOBAL VARIABLES:
 
 class Particle {
@@ -145,9 +161,9 @@ class Particle {
     // }
 
     // if (checkForRemoval) {
-    if (this.firework && this.pos.y <= 0.22 * canvas.height) {
+    if (this.firework && this.pos.y <= 0.235 * canvas.height) {
       this.explode();
-    } else if (this.pos.y <= 0.22 * canvas.height) {
+    } else if (this.pos.y <= 0.235 * canvas.height) {
       this.radius *= 0.98;
     }
 
@@ -259,10 +275,9 @@ function clearContext() {
 }
 
 function displayTitle() {
-  c.fillStyle = 'rgba(255, 255, 255, 0.1)';
   c.fillStyle = 'rgba(0, 0, 0, 0.4)';
-  // c.fillStyle = 'red';
-  c.fillRect(noteWidth, 0.04 * canvas.height, canvas.width - 2 * noteWidth, 0.18 * canvas.height);
+  // c.fillStyle = 'red'; //testing purposes
+  c.fillRect(noteWidth, 0.045 * canvas.height, canvas.width - 2 * noteWidth, 0.19 * canvas.height);
 
   // label title
   c.font = '96px Codystar';
@@ -270,9 +285,44 @@ function displayTitle() {
   c.fillText('Sound of Colors', noteWidth, 0.15 * canvas.height, canvas.width * 5 / 6);
 
   // label name
-  c.font = '24px Codystar';
+  c.font = '36px Codystar';
+  c.fillText('Annie Gu', 5 * noteWidth, 0.21 * canvas.height, canvas.width * 5 / 6);
+
+  // add href event listeners
+  // link icons
+  const yHeight = 0.05 * canvas.height;
+  const y1 = 0.17 * canvas.height;
+  const y2 = y1 + yHeight;
+
+  const xWidth = noteWidth / 2 - 3.5;
+  const githubX1 = 4.25 * noteWidth;
+  const githubX2 = githubX1 + xWidth;
+  const linkedInX1 = 7.45 * noteWidth;
+  const linkedInX2 = linkedInX1 + xWidth;
+
+  // github link
+  if (mouse.x >= githubX1 && mouse.x <= githubX2 && mouse.y >= y1 && mouse.y <= y2) {
+    document.body.style.cursor = "pointer";
+    inGithubLink = true;
+  } else if (mouse.x >= linkedInX1 && mouse.x <= linkedInX2 && mouse.y >= y1 && mouse.y <= y2) {
+    document.body.style.cursor = "pointer";
+    inLinkedInLink = true;
+  } else {
+    document.body.style.cursor = "";
+    inGithubLink = false;
+    inLinkedInLink = false;
+  }
+
+  // add icons
+  c.font = '36px FontAwesome';
+  // github icon
+  if (inGithubLink) c.fillStyle = Object(__WEBPACK_IMPORTED_MODULE_0__helper_methods__["d" /* randomColor */])(1);
+  c.fillText('\uf09b', 4.3 * noteWidth, 0.21 * canvas.height, canvas.width * 2 / 6);
   c.fillStyle = 'rgba(255, 255, 255, 1)';
-  c.fillText('Annie Gu', 5.5 * noteWidth, 0.2 * canvas.height, canvas.width * 5 / 6);
+  // linkedin icon
+  if (inLinkedInLink) c.fillStyle = Object(__WEBPACK_IMPORTED_MODULE_0__helper_methods__["d" /* randomColor */])(1);
+  c.fillText('\uf0e1', 7.5 * noteWidth, 0.21 * canvas.height, canvas.width * 2 / 6);
+  c.fillStyle = 'rgba(255, 255, 255, 1)';
 }
 
 function displayPiano() {
@@ -517,7 +567,7 @@ class Firework extends Particle {
 
 
 animate();
-// setInterval(init, 500);
+// setInterval(animate, 500);
 // setInterval(init, 300);
 
 /***/ }),
