@@ -7,13 +7,13 @@ Sit back, relax and enjoy this low-stress, visual and audio application. Press o
 
 ### Functionality and MVP
 
-- [ ] Users will be able to see available piano keys.
-- [ ] Users will be able to visually observe which key is pressed (if one of the piano keys).
-- [ ] Users will be able to hear the correct musical note when playing a piano key.
-- [ ] On key press, users will be able to see a myriad of flying colors.
+- [x] Users will be able to see available piano keys.
+- [x] Users will be able to visually observe which key is pressed (if one of the piano keys).
+- [x] Users will be able to hear the correct musical note when playing a piano key.
+- [x] On key press, users will be able to see a myriad of flying colors.
 
 As a bonus MVP:
-- [ ] Colored dots will explode like fireworks.
+- [x] Colored dots will explode like fireworks.
 
 
 ### Wireframes
@@ -35,17 +35,17 @@ The scripts necessary for this project are:
 ### Implementation Timeline
 
 #### Day 1 - The main goal of this day is to decide what I want the particles to do, and when.
-- [ ] Use solely HTML5 Canvas to draw elements.
-- [ ] Render a piano on the screen with correct positioning and sizing of keys.
-- [ ] Generate particles on systematic randomness.
-- [ ] Find music.
-- [ ] Play music on keypress.
+- [x] Use solely HTML5 Canvas to draw elements.
+- [x] Render a piano on the screen with correct positioning and sizing of keys.
+- [x] Generate particles on systematic randomness.
+- [x] Find music.
+- [x] Play music on keypress.
 
 #### Day 2 - This day will be meant for making the application more cohesive and user-friendly.
-- [ ] Label piano keys.
-- [ ] Shoot fireworks on explosion.
-- [ ] Display title and developer information.
-- [ ] Indicate which key was pressed.
+- [x] Label piano keys.
+- [x] Shoot fireworks on explosion.
+- [x] Display title and developer information.
+- [x] Indicate which key was pressed.
 
 
 ## Challenges
