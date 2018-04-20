@@ -1,70 +1,62 @@
-## MASH
+## Sound of Colors
 
 ### Background and Overview
 
-As housing prices across the nation rises, the average American's salary does not follow suit.
-MASH is a visual analysis of the median housing prices compared to the median household salary, across the United States, by state and by county.
+Sit back, relax and enjoy this low-stress, visual and audio application. Press on the respective keyboard keys (labelled on the piano), and play any song you'd like! You don't have to know how to play piano to make music. Click on other keys for a sideline surprise.
 
 
 ### Functionality and MVP
 
-- [ ] Users will be able to visually observe the median housing price by state.
-- [ ] Users will be able to visually observe the median household salary by state.
-- [ ] On click of individual state, users will be able to visually observe the median housing price by county.
-- [ ] On click of individual state, users will be able to visually observe the median household salary by county.
-- [ ] In addition, there will be a bar indicating the national median, and each state will be ranked by color on a spectrum.
+- [ ] Users will be able to see available piano keys.
+- [ ] Users will be able to visually observe which key is pressed (if one of the piano keys).
+- [ ] Users will be able to hear the correct musical note when playing a piano key.
+- [ ] On key press, users will be able to see a myriad of flying colors.
 
 As a bonus MVP:
-- [ ] Users will be able to see how much a household salary needs to be in order to afford a house in that area.
+- [ ] Colored dots will explode like fireworks.
 
 
 ### Wireframes
 
-This single page app will consist of a map of the United States, color-coded by how each state's median housing price compares to the national median. On hover (or on click), each state will expand and show details of each county, and the estimated necessary household income to afford a house in that area.
-
-![MASH](https://i.imgur.com/RbrK78t.png)
+This single page app will consist of a piano at the bottom of the screen. Keys will be color-coded by key press.
 
 
 ### Architecture and Technologies
 
 This project will utilize the following technologies:
-- Vanilla Javascript for data retrieval
-- HTML5 ad D3 for data visualization
-- Webpack to bundle and run scripts
+- Pure HTML5 Canvas
+- Vanilla Javascript for display logic
 
 The scripts necessary for this project are:
-- `prices.js` for retrieving and saving housing data
-- `income.js` for retrieving and saving income data
-- `map.js` for creating and setting up the map
+- `particle.js` for Particle logic
+- `firework.js` for Firework logic
+- `main.js` for rendering the canvas and all other logic
 
 ### Implementation Timeline
 
-#### Over the weekend
-- [ ] Decide on an idea
-- [ ] Look for data/APIs to fetch data
-- [ ] Set up initial project files
-- [ ] Start learning D3 OR chart.js to implement data mapping
+#### Day 1 - The main goal of this day is to decide what I want the particles to do, and when.
+- [ ] Use solely HTML5 Canvas to draw elements.
+- [ ] Render a piano on the screen with correct positioning and sizing of keys.
+- [ ] Generate particles on systematic randomness.
+- [ ] Find music.
+- [ ] Play music on keypress.
 
-#### Day 1 - The main goal of this day is to be able to extract all the data needed, and organize them in preparation for Day 2.
-- [ ] Write a skeleton of the scripts needed
-- [ ] Set up `webpack.config.js` and `package.json`
-- [ ] Learn more about chart.js
-- [ ] Render a rough chart of data distribution
-
-#### Day 2 - This day will be meant for learning the ins and outs of D3 data visualization. The main goal of this day will be to get a map up and running.
-- [ ] learn more chart.js (animations, more ways to render data)
-- [ ] Render each state individually
-- [ ] Map data to US map
-
-#### Day 3
-- [ ] Implement expand on hover/click
-- [ ] On hover, states will display data
-- [ ] _not sure yet_
-
-#### Day 4
-- [ ] _not sure yet_
+#### Day 2 - This day will be meant for making the application more cohesive and user-friendly.
+- [ ] Label piano keys.
+- [ ] Shoot fireworks on explosion.
+- [ ] Display title and developer information.
+- [ ] Indicate which key was pressed.
 
 
-## Resources
-- (Historical Income By State)[https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-income-households.html]
-- (Geoprojecting US Map)[https://github.com/d3/d3-geo/blob/master/README.md#geoConicEqualArea]
+## Challenges
+- I had a delayed start to this project. Over the weekend and during the first part of the week, I was working on a completely different Javascript project. After working on that project for several days, I decided that there wasn't much improvement I could make on it to a point where I'd be pleased with my accomplishment, so I turned a 180 and decided to attempt a completely different project. Unfortunately, this left me with only 2 1/2 days left to complete my resulting Javascript project.
+- Initially, I thought I would be able to use the same logic for Particles and Fireworks, but it wasn't until near the end of day 2 that I realized that would not be feasible.
+
+
+## Achievements
+- Although I only had two full days to work on this project, I was able to complete most of the foundation logic within the first day. At the end of Day 1, I was able to render a piano, have a title, play sounds and create particles on command. By the end of Day 2, I added labels, fireworks, and links.
+- I challenged myself to completely this project in **100% HTML5 Canvas** and I'm happy to say that I made it happen! There were times when I knew it would be much easier to add other HTML elements into the project (e.g. links to my Github and LinkedIn), but I stayed strong in my original goal, and learned more Canvas methods and possibilities in the process.
+
+
+## Future Additions
+- [ ] Play specific songs, and show keyboard movement on notes
